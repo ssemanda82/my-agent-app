@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Agent</title>
+    <!-- PWA Manifest (Data URI so we only need 1 file) -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Personal Agent","short_name":"Agent","start_url":".","display":"standalone","background_color":"#0f172a","theme_color":"#0f172a","icons":[{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"192x192","type":"image/svg+xml"},{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"512x512","type":"image/svg+xml"}]}'>
+    <meta name="theme-color" content="#0f172a">
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; --accent: #38bdf8; --success: #4ade80; --danger: #f87171; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; }
+        header { padding: 24px 20px 16px; border-bottom: 1px solid #334155; }
+        h1 { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .status-dot { width: 10px; height: 10px; background: var(--success); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--success); }
+        .card { background: var(--card); border-radius: 16px; padding: 20px; margin: 16px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card h2 { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .stat-box { background: #0f172a; border-radius: 12px; padding: 16px; border: 1px solid #334155; }
+        .stat-num { font-size: 28px; font-weight: 700; color: var(--accent); }
+        .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+        
+        .action-btn { width: 100%; padding: 16px; background: var(--accent); color: #0f172a; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .action-btn:active { transform: scale(0.98); }
+        
+        nav { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-top: 1px solid #334155; display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 11px; gap: 4px; text-decoration: none; }
+        .nav-item.active { color: var(--accent); }
+        .nav-icon { font-size: 24px; }
+        
+        .loader { border: 3px solid #334155; border-top: 3px solid var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><span class="status-dot"></span> Agent</h1>
+        <p style="color: var(--muted); font-size: 14px; margin-top: 4px;" id="status-text">Connecting to backend...</p>
+    </header>
+
+    <main id="app-content">
+        <!-- INBOX CARD -->
+        <div class="card">
+            <h2>Inbox Overview</h2>
+            <div class="grid">
+                <div class="stat-box">
+                    <div class="stat-num" id="total-emails">-</div>
+                    <div class="stat-label">Total Scanned</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="unread-emails" style="color: var(--danger)">-</div>
+                    <div class="stat-label">Unread</div>
+                </div>
+            </div>
+            <button class="action-btn" onclick="alert('Phase 2: Inbox Cleanup UI coming next!')">🧹 Run Cleanup Scan</button>
+        </div>
+
+        <!-- JOBS CARD -->
+        <div class="card">
+            <h2>Job Hunt</h2>
+            <div class="grid">
+                <div class="stat-box">
+                    <div class="stat-num" id="jobs-detected">-</div>
+                    <div class="stat-label">Jobs Detected</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="matches-found" style="color: var(--success)">-</div>
+                    <div class="stat-label">Strong Matches</div>
+                </div>
+            </div>
+            <button class="action-btn" onclick="alert('Phase 4: Job Matcher UI coming next!')">🎯 View Matched Jobs</button>
+        </div>
+
+        <div class="card" style="text-align: center; color: var(--muted); font-size: 13px;">
+            <p>Backend: Google Apps Script</p>
+            <p>AI Brain: Groq (Llama 3)</p>
+        </div>
+    </main>
+
+    <nav>
+        <a href="#" class="nav-item active">
+            <span class="nav-icon">🏠</span> Home
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">📬</span> Inbox
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">💼</span> Jobs
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">📊</span> Apps
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">⚙️</span> Settings
+        </a>
+    </nav>
+
+    <script>
+        // ==========================================
+        // ⚠️ EDIT THESE TWO LINES WITH YOUR DETAILS
+        // ==========================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWHiYa5MF2b8URkkzGWtJmO0PpdYC7r2C_UTFFtXLTT4EKvidt1phDg3PdDTTLPlO5ew/exec"; 
+        const SECRET_KEY = "mySecretKey123"; 
+
+        async function loadData() {
+            if(SCRIPT_URL.includes("PASTE_YOUR")) {
+                document.getElementById('status-text').innerText = "⚠️ Edit index.html to add your Script URL!";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?key=${SECRET_KEY}&action=dashboard`);
+                const data = await response.json();
+                
+                if(data.error) throw new Error(data.error);
+
+                document.getElementById('status-text').innerText = data.status;
+                document.getElementById('total-emails').innerText = data.totalEmails;
+                document.getElementById('unread-emails').innerText = data.unreadEmails;
+                document.getElementById('jobs-detected').innerText = data.jobsDetected;
+                document.getElementById('matches-found').innerText = data.matchesFound;
+            } catch (err) {
+                document.getElementById('status-text').innerText = "❌ Connection failed";
+                console.error(err);
+            }
+        }
+
+        // PWA Service Worker registration (makes it installable)
+        const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim()));`;
+        const swUrl = URL.createObjectURL(new Blob([swCode], {type: 'application/javascript'}));
+        if('serviceWorker' in navigator) navigator.serviceWorker.register(swUrl).catch(e=>console.log('SW:', e));
+
+        // Load data on start
+        loadData();
+    </script>
+</body>
+                      </html>
