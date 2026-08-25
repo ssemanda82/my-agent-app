@@ -7,42 +7,26 @@
 <meta name="theme-color" content="#0B1220">
 <link rel="manifest" href='data:application/manifest+json,{"name":"Personal Agent","short_name":"Agent","start_url":".","display":"standalone","background_color":"#0B1220","theme_color":"#0B1220","icons":[{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"192x192","type":"image/svg+xml"},{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"512x512","type":"image/svg+xml"}]}'>
 <style>
-:root{
-  --bg:#0B1220; --card:#141E33; --card2:#0F192C; --line:rgba(148,163,184,.14);
-  --text:#F1F5F9; --muted:#8CA0B8; --accent:#38BDF8; --accent2:#0EA5E9;
-  --green:#34D399; --red:#FB7185; --amber:#FBBF24; --r:20px;
-}
+:root{--bg:#0B1220;--card:#141E33;--card2:#0F192C;--line:rgba(148,163,184,.14);--text:#F1F5F9;--muted:#8CA0B8;--accent:#38BDF8;--accent2:#0EA5E9;--green:#34D399;--red:#FB7185;--amber:#FBBF24;--r:20px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  padding:0 16px calc(96px + env(safe-area-inset-bottom));overflow-x:hidden;
-}
-.glow{position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(560px 260px at 50% -80px, rgba(56,189,248,.16), transparent 70%);}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 16px calc(96px + env(safe-area-inset-bottom));overflow-x:hidden}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(560px 260px at 50% -80px,rgba(56,189,248,.16),transparent 70%)}
 header,main,nav{position:relative;z-index:1}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 4px 8px}
 .brand{display:flex;align-items:center;gap:12px}
-.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--accent),#6366F1);
-  box-shadow:0 8px 20px -8px rgba(56,189,248,.5)}
+.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#6366F1);box-shadow:0 8px 20px -8px rgba(56,189,248,.5)}
 .logo svg{width:22px;height:22px}
-.brand h1{font-size:19px;font-weight:800;letter-spacing:.2px}
+.brand h1{font-size:19px;font-weight:800}
 .brand p{font-size:12px;color:var(--muted);margin-top:1px}
-.pill{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);
-  background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:7px 12px}
+.pill{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:7px 12px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber)}
 .dot.on{background:var(--green);box-shadow:0 0 10px var(--green)}
 .dot.err{background:var(--red);box-shadow:0 0 10px var(--red)}
-.card{background:linear-gradient(180deg,var(--card),var(--card2));
-  border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-top:14px;
-  animation:rise .5s ease both}
-.card:nth-of-type(2){animation-delay:.08s}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-top:14px;animation:rise .5s ease both}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .card-head h2{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
-.icon-btn{background:none;border:1px solid var(--line);border-radius:12px;width:36px;height:36px;
-  display:grid;place-items:center;color:var(--muted);cursor:pointer}
+.icon-btn{background:none;border:1px solid var(--line);border-radius:12px;width:36px;height:36px;display:grid;place-items:center;color:var(--muted);cursor:pointer}
 .icon-btn:active{transform:scale(.94)}
 .icon-btn svg{width:16px;height:16px}
 .spin svg{animation:spin 1s linear infinite}
@@ -60,70 +44,61 @@ header,main,nav{position:relative;z-index:1}
 .tile .num{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
 .tile .lbl{font-size:11px;color:var(--muted);margin-top:2px}
 .tile svg{width:15px;height:15px;margin-bottom:6px}
-.c-sky{color:var(--accent)} .c-red{color:var(--red)} .c-green{color:var(--green)}
+.c-sky{color:var(--accent)}.c-red{color:var(--red)}.c-green{color:var(--green)}
 .bar{height:8px;border-radius:99px;background:rgba(148,163,184,.15);overflow:hidden;margin:12px 0 6px}
-.bar i{display:block;height:100%;width:0;border-radius:99px;
-  background:linear-gradient(90deg,var(--green),var(--accent));transition:width 1s ease}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--accent));transition:width 1s ease}
 .bar-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.btn{border:none;border-radius:16px;padding:15px 10px;font-size:14px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
-  animation:rise .5s .15s ease both}
+.btn{border:none;border-radius:16px;padding:15px 10px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
 .btn:active{transform:scale(.97)}
 .btn svg{width:17px;height:17px}
-.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06263A;
-  box-shadow:0 10px 24px -10px rgba(14,165,233,.55)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06263A;box-shadow:0 10px 24px -10px rgba(14,165,233,.55)}
 .btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:rgba(251,113,133,.12);color:var(--red);border:1px solid rgba(251,113,133,.3)}
 .foot{text-align:center;color:var(--muted);font-size:11px;margin:18px 0 6px;opacity:.7}
-nav{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom));
-  background:rgba(15,25,44,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid var(--line);border-radius:22px;
-  display:flex;justify-content:space-around;padding:10px 6px;z-index:10}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;
-  color:var(--muted);font-size:10px;font-weight:600;text-decoration:none;
-  padding:4px 10px;border-radius:12px}
+nav{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom));background:rgba(15,25,44,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:22px;display:flex;justify-content:space-around;padding:10px 6px;z-index:10}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:10px;font-weight:600;text-decoration:none;padding:4px 10px;border-radius:12px}
 .nav-item svg{width:20px;height:20px}
 .nav-item.active{color:var(--accent)}
 .nav-item.active::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--accent)}
-.skel{position:relative;color:transparent!important;border-radius:8px;
-  background:rgba(148,163,184,.12);overflow:hidden}
-.skel::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
-  animation:shimmer 1.2s infinite}
+.skel{position:relative;color:transparent!important;border-radius:8px;background:rgba(148,163,184,.12);overflow:hidden}
+.skel::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:shimmer 1.2s infinite}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
-#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));
-  transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;
-  background:#1E293B;border:1px solid var(--line);color:var(--text);
-  font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;
-  transition:.3s;z-index:20;box-shadow:0 10px 30px -10px #000}
+#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:#1E293B;border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;transition:.3s;z-index:20;box-shadow:0 10px 30px -10px #000}
 #toast.show{opacity:1;transform:translateX(-50%)}
+.screen{display:none}.screen.show{display:block;animation:rise .4s ease}
+.job{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(11,18,32,.6);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px;text-decoration:none;color:var(--text)}
+.job b{font-size:14px;display:block}
+.job span{font-size:12px;color:var(--muted);display:block;margin-top:2px}
+.chip{flex:none;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border-radius:999px;padding:5px 10px}
+.chip.MATCH{background:rgba(52,211,153,.15);color:var(--green)}
+.chip.skipped{background:rgba(148,163,184,.12);color:var(--muted)}
+.chip.error{background:rgba(251,113,133,.12);color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.cat{background:rgba(11,18,32,.6);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--muted)}
+.cat b{color:var(--text)}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:24px 0}
+input{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:14px;font-size:13px;margin:10px 0}
 </style>
 </head>
 <body>
 <div class="glow"></div>
-
 <header>
   <div class="topbar">
     <div class="brand">
-      <div class="logo">
-        <svg viewBox="0 0 24 24" fill="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="white"/></svg>
-      </div>
-      <div>
-        <h1>Agent</h1>
-        <p id="dateline">—</p>
-      </div>
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="white"/></svg></div>
+      <div><h1>Agent</h1><p id="dateline">—</p></div>
     </div>
     <div class="pill"><span class="dot" id="dot"></span><span id="status-text">Connecting…</span></div>
   </div>
 </header>
 
 <main>
-  <section class="card">
-    <div class="card-head">
-      <h2>Inbox health</h2>
-      <button class="icon-btn" id="refresh" onclick="loadData()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-      </button>
+<!-- HOME -->
+<section class="screen" id="screen-home">
+  <div class="card">
+    <div class="card-head"><h2>Inbox health</h2>
+      <button class="icon-btn" id="refresh" onclick="loadData()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
     </div>
     <div class="hero-grid">
       <div class="ring-box">
@@ -134,112 +109,175 @@ nav{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-b
         <div class="ring-label"><div><b id="read-pct" class="skel">0%</b><span>CLEAN</span></div></div>
       </div>
       <div class="tiles">
-        <div class="tile"><svg class="c-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
-          <div class="num c-sky skel" id="total-emails">0</div><div class="lbl">Scanned</div></div>
-        <div class="tile"><svg class="c-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
-          <div class="num c-red skel" id="unread-emails">0</div><div class="lbl">Unread</div></div>
+        <div class="tile"><svg class="c-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg><div class="num c-sky skel" id="total-emails">0</div><div class="lbl">Scanned</div></div>
+        <div class="tile"><svg class="c-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><div class="num c-red skel" id="unread-emails">0</div><div class="lbl">Unread</div></div>
       </div>
     </div>
-  </section>
-
-  <section class="card">
+  </div>
+  <div class="card">
     <div class="card-head"><h2>Job hunt</h2></div>
     <div class="tiles">
-      <div class="tile"><svg class="c-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        <div class="num c-sky skel" id="jobs-detected">0</div><div class="lbl">Jobs detected</div></div>
-      <div class="tile"><svg class="c-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        <div class="num c-green skel" id="matches-found">0</div><div class="lbl">Strong matches</div></div>
+      <div class="tile"><svg class="c-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><div class="num c-sky skel" id="jobs-detected">0</div><div class="lbl">Jobs detected</div></div>
+      <div class="tile"><svg class="c-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><div class="num c-green skel" id="matches-found">0</div><div class="lbl">Strong matches</div></div>
     </div>
     <div class="bar"><i id="match-bar"></i></div>
     <div class="bar-meta"><span>Match rate</span><span id="match-rate">—</span></div>
-  </section>
-
-  <div class="actions">
-    <button class="btn primary" onclick="toast('Phase 2: Cleanup screen next')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      Cleanup
-    </button>
-    <button class="btn ghost" onclick="toast('Phase 4: Jobs screen next')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-      Matched jobs
-    </button>
   </div>
+  <div class="actions">
+    <button class="btn primary" onclick="show('inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Cleanup</button>
+    <button class="btn ghost" onclick="show('jobs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Matched jobs</button>
+  </div>
+  <p class="foot">Backend · Google Apps Script • AI · Groq</p>
+</section>
 
-  <p class="foot">Backend · Google Apps Script &nbsp;•&nbsp; AI · Groq</p>
+<!-- JOBS -->
+<section class="screen" id="screen-jobs">
+  <div class="card"><div class="card-head"><h2>Detected jobs</h2></div><div id="jobs-list"><div class="empty">Loading…</div></div></div>
+</section>
+
+<!-- INBOX -->
+<section class="screen" id="screen-inbox">
+  <div class="card">
+    <div class="card-head"><h2>Categories</h2>
+      <button class="icon-btn" id="scan-btn" onclick="runScan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></button>
+    </div>
+    <div id="cats" class="chips"><div class="empty">Tap ⚡ to run your first AI scan</div></div>
+  </div>
+  <div class="card" id="cleanup-card" style="display:none">
+    <div class="card-head"><h2>Ready to archive</h2></div>
+    <div id="cleanup-list"></div>
+    <div class="actions">
+      <button class="btn primary" onclick="doCleanup('approve')">✅ Archive all</button>
+      <button class="btn danger" onclick="doCleanup('reject')">Keep all</button>
+    </div>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section class="screen" id="screen-settings">
+  <div class="card">
+    <div class="card-head"><h2>Backend connection</h2></div>
+    <p style="font-size:13px;color:var(--muted)">Paste your Apps Script Web-app URL (ends in /exec). Saved on this phone forever.</p>
+    <input id="url-input" placeholder="https://script.google.com/macros/s/…/exec">
+    <button class="btn primary" style="width:100%" onclick="saveURL()">Save & connect</button>
+  </div>
+</section>
 </main>
 
 <nav>
-  <a class="nav-item active" href="#" onclick="return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
-  <a class="nav-item" href="#" onclick="toast('Inbox — Phase 2');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>Inbox</a>
-  <a class="nav-item" href="#" onclick="toast('Jobs — Phase 4');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Jobs</a>
-  <a class="nav-item" href="#" onclick="toast('Applications — Phase 5');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>Apps</a>
-  <a class="nav-item" href="#" onclick="toast('Settings — soon');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Settings</a>
+  <a class="nav-item active" data-nav="home" href="#" onclick="show('home');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+  <a class="nav-item" data-nav="inbox" href="#" onclick="show('inbox');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>Inbox</a>
+  <a class="nav-item" data-nav="jobs" href="#" onclick="show('jobs');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Jobs</a>
+  <a class="nav-item" data-nav="apps" href="#" onclick="toast('Applications — Phase 5');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>Apps</a>
+  <a class="nav-item" data-nav="settings" href="#" onclick="show('settings');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Settings</a>
 </nav>
-
 <div id="toast"></div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqZO9mWnhW45QlEP6URlCJUF60DYTmSo1wXY7m2gwNeZu-UYixsKjQxmoPoGdkJZMsNg/exec";
-const SECRET_KEY = "mySecretKey123";
+var SECRET_KEY = "mySecretKey123";
+function getURL(){ return localStorage.getItem('SCRIPT_URL') || ""; }
+function api(action){ return fetch(getURL() + '?key=' + SECRET_KEY + '&action=' + action).then(function(r){ return r.json(); }); }
 
-document.getElementById('dateline').textContent =
-  new Date().toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'long'});
+document.getElementById('dateline').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'long'});
+document.getElementById('url-input').value = getURL();
 
-function toast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2200);
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2200); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function setNum(id,val){ var el=document.getElementById(id); el.textContent=val; el.classList.remove('skel'); }
+
+function show(name){
+  var screens=document.querySelectorAll('.screen');
+  for(var i=0;i<screens.length;i++) screens[i].classList.remove('show');
+  document.getElementById('screen-'+name).classList.add('show');
+  var navs=document.querySelectorAll('.nav-item');
+  for(var j=0;j<navs.length;j++) navs[j].classList.remove('active');
+  var n=document.querySelector('[data-nav="'+name+'"]'); if(n) n.classList.add('active');
+  if(name==='jobs') loadJobs();
+  if(name==='inbox') loadInbox();
 }
 
-function setNum(id,val){
-  var el=document.getElementById(id);
-  el.textContent=val; el.classList.remove('skel');
+function saveURL(){
+  var u=document.getElementById('url-input').value.trim();
+  if(u.indexOf('/exec')===-1){ toast('URL must end in /exec'); return; }
+  localStorage.setItem('SCRIPT_URL', u);
+  toast('✅ Connected');
+  show('home'); loadData();
 }
 
-async function loadData(){
-  var rb=document.getElementById('refresh');
-  rb.classList.add('spin');
-  if(SCRIPT_URL.indexOf('PASTE_YOUR')!==-1){
-    document.getElementById('status-text').textContent='Add your Script URL';
-    document.getElementById('dot').className='dot err';
-    rb.classList.remove('spin'); return;
-  }
-  try{
-    var r=await fetch(SCRIPT_URL+'?key='+SECRET_KEY+'&action=dashboard');
-    var d=await r.json();
-    if(d.error) throw new Error(d.error);
-
+function loadData(){
+  if(!getURL()){ show('settings'); toast('Connect your backend once'); return; }
+  var rb=document.getElementById('refresh'); rb.classList.add('spin');
+  api('dashboard').then(function(d){
     document.getElementById('status-text').textContent='Live';
     document.getElementById('dot').className='dot on';
-
-    var scanned=parseInt(String(d.totalEmails).replace(/\D/g,''))||0;
-    var unread=d.unreadEmails||0;
-    setNum('total-emails',scanned);
-    setNum('unread-emails',unread);
-
+    var scanned=d.totalEmails||0, unread=d.unreadEmails||0;
+    setNum('total-emails',scanned); setNum('unread-emails',unread);
     var clean=scanned? Math.round((scanned-unread)/scanned*100):0;
-    var C=301.6;
-    document.getElementById('ring').style.strokeDashoffset=String(C-(C*clean/100));
-    var rp=document.getElementById('read-pct');
-    rp.textContent=clean+'%'; rp.classList.remove('skel');
-
-    setNum('jobs-detected',d.jobsDetected||0);
-    setNum('matches-found',d.matchesFound||0);
+    document.getElementById('ring').style.strokeDashoffset=String(301.6-(301.6*clean/100));
+    var rp=document.getElementById('read-pct'); rp.textContent=clean+'%'; rp.classList.remove('skel');
+    setNum('jobs-detected',d.jobsDetected||0); setNum('matches-found',d.matchesFound||0);
     var rate=(d.jobsDetected>0)? Math.round(d.matchesFound/d.jobsDetected*100):0;
     document.getElementById('match-rate').textContent=rate+'%';
     document.getElementById('match-bar').style.width=rate+'%';
-  }catch(e){
-    document.getElementById('status-text').textContent='Offline';
-    document.getElementById('dot').className='dot err';
-  }
-  rb.classList.remove('spin');
+    rb.classList.remove('spin');
+  }).catch(function(){ document.getElementById('status-text').textContent='Offline'; document.getElementById('dot').className='dot err'; rb.classList.remove('spin'); });
+}
+
+function loadJobs(){
+  api('jobs').then(function(d){
+    var el=document.getElementById('jobs-list');
+    if(!d.jobs || !d.jobs.length){ el.innerHTML='<div class="empty">No jobs logged yet.</div>'; return; }
+    var html='';
+    for(var i=0;i<d.jobs.length;i++){
+      var j=d.jobs[i];
+      html+='<a class="job" href="'+esc(j.url)+'" target="_blank"><div><b>'+esc(j.title||'Job opening')+'</b><span>'+esc(j.company||j.url.replace('https://','').substring(0,34))+' · '+esc(j.date)+'</span></div><em class="chip '+esc(j.status)+'">'+esc(j.status)+'</em></a>';
+    }
+    el.innerHTML=html;
+  }).catch(function(){ document.getElementById('jobs-list').innerHTML='<div class="empty">Offline — check Settings</div>'; });
+}
+
+var CATNAMES={JOB_RELATED:'Jobs',NEWSLETTER:'Newsletters',PROMOTION:'Promotions',SOCIAL:'Social',FINANCIAL:'Finance',PERSONAL:'Personal',NOTIFICATION:'Alerts',SPAM_CANDIDATE:'Spam',KEEP:'Keep',UNKNOWN:'Unknown'};
+function loadInbox(){
+  api('inbox').then(function(d){
+    var el=document.getElementById('cats');
+    if(!d.scanned){ el.innerHTML='<div class="empty">Tap ⚡ to run your first AI scan</div>'; }
+    else{
+      var html='';
+      var keys=Object.keys(d.counts).sort(function(a,b){return d.counts[b]-d.counts[a];});
+      for(var i=0;i<keys.length;i++){ html+='<span class="cat">'+(CATNAMES[keys[i]]||keys[i])+' <b>'+d.counts[keys[i]]+'</b></span>'; }
+      el.innerHTML=html||'<div class="empty">No data</div>';
+    }
+    var cc=document.getElementById('cleanup-card');
+    if(d.pendingCount>0){
+      cc.style.display='block';
+      var list='';
+      for(var k=0;k<d.cleanup.length;k++){ list+='<div class="job" style="margin-top:8px"><div><b>'+esc(String(d.cleanup[k].from).split('<')[0])+'</b><span>'+esc(d.cleanup[k].subject)+'</span></div></div>'; }
+      document.getElementById('cleanup-list').innerHTML='<p style="font-size:13px;color:var(--muted);margin-bottom:6px">'+d.pendingCount+' old newsletters/promos/spam ready to archive:</p>'+list;
+    } else cc.style.display='none';
+  }).catch(function(){ document.getElementById('cats').innerHTML='<div class="empty">Offline — check Settings</div>'; });
+}
+
+function runScan(){
+  var b=document.getElementById('scan-btn'); b.classList.add('spin');
+  toast('🧹 AI scanning your inbox…');
+  api('scan').then(function(d){
+    b.classList.remove('spin');
+    toast('Scan done: '+d.archiveCount+' archive candidates');
+    loadInbox();
+  }).catch(function(){ b.classList.remove('spin'); toast('Scan failed — see Telegram'); });
+}
+
+function doCleanup(mode){
+  api(mode).then(function(){
+    toast(mode==='approve' ? '✅ Archived!' : '👌 Kept everything');
+    loadInbox();
+  }).catch(function(){ toast('Failed'); });
 }
 
 var swCode="self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));";
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode],{type:'application/javascript'}))).catch(function(){});
-}
-loadData();
+if('serviceWorker' in navigator){ navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode],{type:'application/javascript'}))).catch(function(){}); }
+
+if(getURL()){ show('home'); loadData(); } else { show('settings'); }
 </script>
 </body>
-                                                                                  </html>
+</html>
