@@ -1,140 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agent</title>
-    <!-- PWA Manifest (Data URI so we only need 1 file) -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"Personal Agent","short_name":"Agent","start_url":".","display":"standalone","background_color":"#0f172a","theme_color":"#0f172a","icons":[{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"192x192","type":"image/svg+xml"},{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"512x512","type":"image/svg+xml"}]}'>
-    <meta name="theme-color" content="#0f172a">
-    <style>
-        :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --muted: #94a3b8; --accent: #38bdf8; --success: #4ade80; --danger: #f87171; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; }
-        header { padding: 24px 20px 16px; border-bottom: 1px solid #334155; }
-        h1 { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .status-dot { width: 10px; height: 10px; background: var(--success); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--success); }
-        .card { background: var(--card); border-radius: 16px; padding: 20px; margin: 16px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .card h2 { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .stat-box { background: #0f172a; border-radius: 12px; padding: 16px; border: 1px solid #334155; }
-        .stat-num { font-size: 28px; font-weight: 700; color: var(--accent); }
-        .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
-        
-        .action-btn { width: 100%; padding: 16px; background: var(--accent); color: #0f172a; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-top: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .action-btn:active { transform: scale(0.98); }
-        
-        nav { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-top: 1px solid #334155; display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 11px; gap: 4px; text-decoration: none; }
-        .nav-item.active { color: var(--accent); }
-        .nav-icon { font-size: 24px; }
-        
-        .loader { border: 3px solid #334155; border-top: 3px solid var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .hidden { display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agent</title>
+<meta name="theme-color" content="#0B1220">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Personal Agent","short_name":"Agent","start_url":".","display":"standalone","background_color":"#0B1220","theme_color":"#0B1220","icons":[{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"192x192","type":"image/svg+xml"},{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"512x512","type":"image/svg+xml"}]}'>
+<style>
+:root{
+  --bg:#0B1220; --card:#141E33; --card2:#0F192C; --line:rgba(148,163,184,.14);
+  --text:#F1F5F9; --muted:#8CA0B8; --accent:#38BDF8; --accent2:#0EA5E9;
+  --green:#34D399; --red:#FB7185; --amber:#FBBF24; --r:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  padding:0 16px calc(96px + env(safe-area-inset-bottom));overflow-x:hidden;
+}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(560px 260px at 50% -80px, rgba(56,189,248,.16), transparent 70%);}
+header,main,nav{position:relative;z-index:1}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 4px 8px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),#6366F1);
+  box-shadow:0 8px 20px -8px rgba(56,189,248,.5)}
+.logo svg{width:22px;height:22px}
+.brand h1{font-size:19px;font-weight:800;letter-spacing:.2px}
+.brand p{font-size:12px;color:var(--muted);margin-top:1px}
+.pill{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted);
+  background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:7px 12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.dot.on{background:var(--green);box-shadow:0 0 10px var(--green)}
+.dot.err{background:var(--red);box-shadow:0 0 10px var(--red)}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));
+  border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-top:14px;
+  animation:rise .5s ease both}
+.card:nth-of-type(2){animation-delay:.08s}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-head h2{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted)}
+.icon-btn{background:none;border:1px solid var(--line);border-radius:12px;width:36px;height:36px;
+  display:grid;place-items:center;color:var(--muted);cursor:pointer}
+.icon-btn:active{transform:scale(.94)}
+.icon-btn svg{width:16px;height:16px}
+.spin svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-grid{display:flex;gap:16px;align-items:center}
+.ring-box{position:relative;width:112px;height:112px;flex:none}
+.ring-box svg{transform:rotate(-90deg)}
+.ring-bg{stroke:rgba(148,163,184,.15)}
+.ring-fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.ring-label{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring-label b{font-size:22px;font-weight:800}
+.ring-label span{display:block;font-size:10px;color:var(--muted);letter-spacing:.6px}
+.tiles{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:rgba(11,18,32,.6);border:1px solid var(--line);border-radius:14px;padding:12px}
+.tile .num{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.tile .lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.tile svg{width:15px;height:15px;margin-bottom:6px}
+.c-sky{color:var(--accent)} .c-red{color:var(--red)} .c-green{color:var(--green)}
+.bar{height:8px;border-radius:99px;background:rgba(148,163,184,.15);overflow:hidden;margin:12px 0 6px}
+.bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--green),var(--accent));transition:width 1s ease}
+.bar-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.btn{border:none;border-radius:16px;padding:15px 10px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+  animation:rise .5s .15s ease both}
+.btn:active{transform:scale(.97)}
+.btn svg{width:17px;height:17px}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06263A;
+  box-shadow:0 10px 24px -10px rgba(14,165,233,.55)}
+.btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+.foot{text-align:center;color:var(--muted);font-size:11px;margin:18px 0 6px;opacity:.7}
+nav{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom));
+  background:rgba(15,25,44,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:22px;
+  display:flex;justify-content:space-around;padding:10px 6px;z-index:10}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:var(--muted);font-size:10px;font-weight:600;text-decoration:none;
+  padding:4px 10px;border-radius:12px}
+.nav-item svg{width:20px;height:20px}
+.nav-item.active{color:var(--accent)}
+.nav-item.active::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.skel{position:relative;color:transparent!important;border-radius:8px;
+  background:rgba(148,163,184,.12);overflow:hidden}
+.skel::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+  animation:shimmer 1.2s infinite}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));
+  transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;
+  background:#1E293B;border:1px solid var(--line);color:var(--text);
+  font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;
+  transition:.3s;z-index:20;box-shadow:0 10px 30px -10px #000}
+#toast.show{opacity:1;transform:translateX(-50%)}
+</style>
 </head>
 <body>
+<div class="glow"></div>
 
-    <header>
-        <h1><span class="status-dot"></span> Agent</h1>
-        <p style="color: var(--muted); font-size: 14px; margin-top: 4px;" id="status-text">Connecting to backend...</p>
-    </header>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="white"/></svg>
+      </div>
+      <div>
+        <h1>Agent</h1>
+        <p id="dateline">—</p>
+      </div>
+    </div>
+    <div class="pill"><span class="dot" id="dot"></span><span id="status-text">Connecting…</span></div>
+  </div>
+</header>
 
-    <main id="app-content">
-        <!-- INBOX CARD -->
-        <div class="card">
-            <h2>Inbox Overview</h2>
-            <div class="grid">
-                <div class="stat-box">
-                    <div class="stat-num" id="total-emails">-</div>
-                    <div class="stat-label">Total Scanned</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-num" id="unread-emails" style="color: var(--danger)">-</div>
-                    <div class="stat-label">Unread</div>
-                </div>
-            </div>
-            <button class="action-btn" onclick="alert('Phase 2: Inbox Cleanup UI coming next!')">🧹 Run Cleanup Scan</button>
-        </div>
+<main>
+  <section class="card">
+    <div class="card-head">
+      <h2>Inbox health</h2>
+      <button class="icon-btn" id="refresh" onclick="loadData()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
+    </div>
+    <div class="hero-grid">
+      <div class="ring-box">
+        <svg width="112" height="112" viewBox="0 0 112 112" fill="none">
+          <circle class="ring-bg" cx="56" cy="56" r="48" stroke-width="10"/>
+          <circle class="ring-fg" id="ring" cx="56" cy="56" r="48" stroke-width="10" stroke-dasharray="301.6" stroke-dashoffset="301.6"/>
+        </svg>
+        <div class="ring-label"><div><b id="read-pct" class="skel">0%</b><span>CLEAN</span></div></div>
+      </div>
+      <div class="tiles">
+        <div class="tile"><svg class="c-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div class="num c-sky skel" id="total-emails">0</div><div class="lbl">Scanned</div></div>
+        <div class="tile"><svg class="c-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+          <div class="num c-red skel" id="unread-emails">0</div><div class="lbl">Unread</div></div>
+      </div>
+    </div>
+  </section>
 
-        <!-- JOBS CARD -->
-        <div class="card">
-            <h2>Job Hunt</h2>
-            <div class="grid">
-                <div class="stat-box">
-                    <div class="stat-num" id="jobs-detected">-</div>
-                    <div class="stat-label">Jobs Detected</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-num" id="matches-found" style="color: var(--success)">-</div>
-                    <div class="stat-label">Strong Matches</div>
-                </div>
-            </div>
-            <button class="action-btn" onclick="alert('Phase 4: Job Matcher UI coming next!')">🎯 View Matched Jobs</button>
-        </div>
+  <section class="card">
+    <div class="card-head"><h2>Job hunt</h2></div>
+    <div class="tiles">
+      <div class="tile"><svg class="c-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <div class="num c-sky skel" id="jobs-detected">0</div><div class="lbl">Jobs detected</div></div>
+      <div class="tile"><svg class="c-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <div class="num c-green skel" id="matches-found">0</div><div class="lbl">Strong matches</div></div>
+    </div>
+    <div class="bar"><i id="match-bar"></i></div>
+    <div class="bar-meta"><span>Match rate</span><span id="match-rate">—</span></div>
+  </section>
 
-        <div class="card" style="text-align: center; color: var(--muted); font-size: 13px;">
-            <p>Backend: Google Apps Script</p>
-            <p>AI Brain: Groq (Llama 3)</p>
-        </div>
-    </main>
+  <div class="actions">
+    <button class="btn primary" onclick="toast('Phase 2: Cleanup screen next')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Cleanup
+    </button>
+    <button class="btn ghost" onclick="toast('Phase 4: Jobs screen next')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      Matched jobs
+    </button>
+  </div>
 
-    <nav>
-        <a href="#" class="nav-item active">
-            <span class="nav-icon">🏠</span> Home
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-icon">📬</span> Inbox
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-icon">💼</span> Jobs
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-icon">📊</span> Apps
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-icon">⚙️</span> Settings
-        </a>
-    </nav>
+  <p class="foot">Backend · Google Apps Script &nbsp;•&nbsp; AI · Groq</p>
+</main>
 
-    <script>
-        // ==========================================
-        // ⚠️ EDIT THESE TWO LINES WITH YOUR DETAILS
-        // ==========================================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqZO9mWnhW45QlEP6URlCJUF60DYTmSo1wXY7m2gwNeZu-UYixsKjQxmoPoGdkJZMsNg/exec"; 
-        const SECRET_KEY = "mySecretKey123"; 
+<nav>
+  <a class="nav-item active" href="#" onclick="return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+  <a class="nav-item" href="#" onclick="toast('Inbox — Phase 2');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>Inbox</a>
+  <a class="nav-item" href="#" onclick="toast('Jobs — Phase 4');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Jobs</a>
+  <a class="nav-item" href="#" onclick="toast('Applications — Phase 5');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>Apps</a>
+  <a class="nav-item" href="#" onclick="toast('Settings — soon');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Settings</a>
+</nav>
 
-        async function loadData() {
-            if(SCRIPT_URL.includes("PASTE_YOUR")) {
-                document.getElementById('status-text').innerText = "⚠️ Edit index.html to add your Script URL!";
-                return;
-            }
+<div id="toast"></div>
 
-            try {
-                const response = await fetch(`${SCRIPT_URL}?key=${SECRET_KEY}&action=dashboard`);
-                const data = await response.json();
-                
-                if(data.error) throw new Error(data.error);
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqZO9mWnhW45QlEP6URlCJUF60DYTmSo1wXY7m2gwNeZu-UYixsKjQxmoPoGdkJZMsNg/exec";
+const SECRET_KEY = "mySecretKey123";
 
-                document.getElementById('status-text').innerText = data.status;
-                document.getElementById('total-emails').innerText = data.totalEmails;
-                document.getElementById('unread-emails').innerText = data.unreadEmails;
-                document.getElementById('jobs-detected').innerText = data.jobsDetected;
-                document.getElementById('matches-found').innerText = data.matchesFound;
-            } catch (err) {
-                document.getElementById('status-text').innerText = "❌ Connection failed";
-                console.error(err);
-            }
-        }
+document.getElementById('dateline').textContent =
+  new Date().toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'long'});
 
-        // PWA Service Worker registration (makes it installable)
-        const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim()));`;
-        const swUrl = URL.createObjectURL(new Blob([swCode], {type: 'application/javascript'}));
-        if('serviceWorker' in navigator) navigator.serviceWorker.register(swUrl).catch(e=>console.log('SW:', e));
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2200);
+}
 
-        // Load data on start
-        loadData();
-    </script>
+function setNum(id,val){
+  var el=document.getElementById(id);
+  el.textContent=val; el.classList.remove('skel');
+}
+
+async function loadData(){
+  var rb=document.getElementById('refresh');
+  rb.classList.add('spin');
+  if(SCRIPT_URL.indexOf('PASTE_YOUR')!==-1){
+    document.getElementById('status-text').textContent='Add your Script URL';
+    document.getElementById('dot').className='dot err';
+    rb.classList.remove('spin'); return;
+  }
+  try{
+    var r=await fetch(SCRIPT_URL+'?key='+SECRET_KEY+'&action=dashboard');
+    var d=await r.json();
+    if(d.error) throw new Error(d.error);
+
+    document.getElementById('status-text').textContent='Live';
+    document.getElementById('dot').className='dot on';
+
+    var scanned=parseInt(String(d.totalEmails).replace(/\D/g,''))||0;
+    var unread=d.unreadEmails||0;
+    setNum('total-emails',scanned);
+    setNum('unread-emails',unread);
+
+    var clean=scanned? Math.round((scanned-unread)/scanned*100):0;
+    var C=301.6;
+    document.getElementById('ring').style.strokeDashoffset=String(C-(C*clean/100));
+    var rp=document.getElementById('read-pct');
+    rp.textContent=clean+'%'; rp.classList.remove('skel');
+
+    setNum('jobs-detected',d.jobsDetected||0);
+    setNum('matches-found',d.matchesFound||0);
+    var rate=(d.jobsDetected>0)? Math.round(d.matchesFound/d.jobsDetected*100):0;
+    document.getElementById('match-rate').textContent=rate+'%';
+    document.getElementById('match-bar').style.width=rate+'%';
+  }catch(e){
+    document.getElementById('status-text').textContent='Offline';
+    document.getElementById('dot').className='dot err';
+  }
+  rb.classList.remove('spin');
+}
+
+var swCode="self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));";
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode],{type:'application/javascript'}))).catch(function(){});
+}
+loadData();
+</script>
 </body>
-                      </html>
+                                                                                  </html>
