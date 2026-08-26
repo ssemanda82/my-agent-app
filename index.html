@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Agent</title>
 <meta name="theme-color" content="#0B1220">
-<link rel="manifest" href='data:application/manifest+json,{"name":"Personal Agent","short_name":"Agent","start_url":".","display":"standalone","background_color":"#0B1220","theme_color":"#0B1220","icons":[{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"192x192","type":"image/svg+xml"},{"src":"https://api.iconify.design/mdi:robot-happy.svg?color=%2338bdf8","sizes":"512x512","type":"image/svg+xml"}]}'>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="https://placehold.co/192x192/0B1220/38BDF8.png?text=A">
 <style>
 :root{--bg:#0B1220;--card:#141E33;--card2:#0F192C;--line:rgba(148,163,184,.14);--text:#F1F5F9;--muted:#8CA0B8;--accent:#38BDF8;--accent2:#0EA5E9;--green:#34D399;--red:#FB7185;--amber:#FBBF24;--r:20px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -279,7 +280,6 @@ function loadJobs(){
   }).catch(function(){ document.getElementById('jobs-list').innerHTML='<div class="empty">Offline — check Settings</div>'; });
 }
 
-// ---- APPLICATION TRACKER ----
 var LBL={DRAFT_READY:'Draft ready',APPLIED:'Applied',FOLLOWUP:'Follow-up sent',INTERVIEW:'Interview',OFFER:'Offer',REJECTED:'Rejected'};
 function loadApps(){
   api('apps').then(function(d){
@@ -359,7 +359,6 @@ function doCleanup(mode){
   }).catch(function(){ toast('Failed'); });
 }
 
-// ---- CONTROL CENTER ----
 function loadSettings(){
   api('settings').then(function(s){
     document.getElementById('set-roles').value=s.TargetRoles||'';
@@ -399,9 +398,10 @@ function loadCV(){
 function saveCV(){
   postAPI({action:'save_cv', text:document.getElementById('cv-text').value}).then(function(){ toast('✅ Master CV saved'); }).catch(function(){ toast('Save failed'); });
 }
+
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
 
 if(getURL()){ show('home'); loadData(); } else { show('settings'); }
 </script>
 </body>
-                                                                                                                    </html>
+                                                                                                                                                                                                </html>
