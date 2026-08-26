@@ -399,9 +399,7 @@ function loadCV(){
 function saveCV(){
   postAPI({action:'save_cv', text:document.getElementById('cv-text').value}).then(function(){ toast('✅ Master CV saved'); }).catch(function(){ toast('Save failed'); });
 }
-
-var swCode="self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));";
-if('serviceWorker' in navigator){ navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode],{type:'application/javascript'}))).catch(function(){}); }
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
 
 if(getURL()){ show('home'); loadData(); } else { show('settings'); }
 </script>
