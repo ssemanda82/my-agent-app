@@ -74,11 +74,20 @@ nav{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-b
 .chip.MATCH{background:rgba(52,211,153,.15);color:var(--green)}
 .chip.skipped{background:rgba(148,163,184,.12);color:var(--muted)}
 .chip.error{background:rgba(251,113,133,.12);color:var(--red)}
+.st-DRAFT_READY{background:rgba(251,191,36,.15);color:var(--amber)}
+.st-APPLIED{background:rgba(56,189,248,.15);color:var(--accent)}
+.st-FOLLOWUP{background:rgba(251,191,36,.15);color:var(--amber)}
+.st-INTERVIEW{background:rgba(52,211,153,.15);color:var(--green)}
+.st-OFFER{background:rgba(52,211,153,.25);color:var(--green)}
+.st-REJECTED{background:rgba(251,113,133,.12);color:var(--red)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .cat{background:rgba(11,18,32,.6);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--muted)}
 .cat b{color:var(--text)}
 .empty{text-align:center;color:var(--muted);font-size:13px;padding:24px 0}
-input{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:14px;font-size:13px;margin:10px 0}
+.mini{font-size:13px;color:var(--muted);margin-bottom:6px}
+.mini b{color:var(--text)}
+input,textarea{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:14px;font-size:13px;margin:6px 0 12px;font-family:inherit}
+textarea{line-height:1.5}
 </style>
 </head>
 <body>
@@ -94,7 +103,6 @@ input{width:100%;background:var(--card2);border:1px solid var(--line);border-rad
 </header>
 
 <main>
-<!-- HOME -->
 <section class="screen" id="screen-home">
   <div class="card">
     <div class="card-head"><h2>Inbox health</h2>
@@ -125,17 +133,19 @@ input{width:100%;background:var(--card2);border:1px solid var(--line);border-rad
   </div>
   <div class="actions">
     <button class="btn primary" onclick="show('inbox')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Cleanup</button>
-    <button class="btn ghost" onclick="show('jobs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Matched jobs</button>
+    <button class="btn ghost" onclick="show('apps')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>My applications</button>
   </div>
   <p class="foot">Backend · Google Apps Script • AI · Groq</p>
 </section>
 
-<!-- JOBS -->
 <section class="screen" id="screen-jobs">
   <div class="card"><div class="card-head"><h2>Detected jobs</h2></div><div id="jobs-list"><div class="empty">Loading…</div></div></div>
 </section>
 
-<!-- INBOX -->
+<section class="screen" id="screen-apps">
+  <div class="card"><div class="card-head"><h2>Application tracker</h2></div><div id="apps-list"><div class="empty">Loading…</div></div></div>
+</section>
+
 <section class="screen" id="screen-inbox">
   <div class="card">
     <div class="card-head"><h2>Categories</h2>
@@ -144,22 +154,49 @@ input{width:100%;background:var(--card2);border:1px solid var(--line);border-rad
     <div id="cats" class="chips"><div class="empty">Tap ⚡ to run your first AI scan</div></div>
   </div>
   <div class="card" id="cleanup-card" style="display:none">
-    <div class="card-head"><h2>Ready to archive</h2></div>
-    <div id="cleanup-list"></div>
-    <div class="actions">
-      <button class="btn primary" onclick="doCleanup('approve')">✅ Archive all</button>
-      <button class="btn danger" onclick="doCleanup('reject')">Keep all</button>
+    <div class="card-head"><h2>Cleanup ready</h2></div>
+    <div id="archive-block">
+      <p class="mini">📦 <b id="archive-count">0</b> old newsletters / promos / social — filed away, never lost:</p>
+      <div id="archive-list"></div>
+      <button class="btn primary" style="width:100%;margin-top:10px" onclick="doCleanup('approve')">📦 Archive them</button>
     </div>
+    <div id="delete-block" style="margin-top:16px">
+      <p class="mini">🗑 <b id="delete-count">0</b> spam / scams — gone for good (30-day recovery in Trash):</p>
+      <div id="delete-list"></div>
+      <button class="btn danger" style="width:100%;margin-top:10px" onclick="doCleanup('delete')">🗑 Delete spam</button>
+    </div>
+    <button class="btn ghost" style="width:100%;margin-top:12px" onclick="doCleanup('reject')">Keep everything</button>
   </div>
 </section>
 
-<!-- SETTINGS -->
 <section class="screen" id="screen-settings">
   <div class="card">
-    <div class="card-head"><h2>Backend connection</h2></div>
-    <p style="font-size:13px;color:var(--muted)">Paste your Apps Script Web-app URL (ends in /exec). Saved on this phone forever.</p>
+    <div class="card-head"><h2>Backend</h2></div>
     <input id="url-input" placeholder="https://script.google.com/macros/s/…/exec">
     <button class="btn primary" style="width:100%" onclick="saveURL()">Save & connect</button>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Job preferences</h2></div>
+    <p class="mini">Target roles</p><input id="set-roles" placeholder="e.g. Data Engineer, Backend Developer">
+    <p class="mini">Countries / locations</p><input id="set-countries" placeholder="e.g. Netherlands, Germany, Remote">
+    <p class="mini">Minimum salary (optional)</p><input id="set-salary" placeholder="e.g. AED 3,000 or €50,000">
+    <button class="btn primary" style="width:100%" onclick="saveSettings()">Save preferences</button>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Search control</h2></div>
+    <button class="btn primary" style="width:100%" onclick="searchNow()">🔍 Search jobs now</button>
+    <p class="mini" style="margin-top:14px">Automatic schedule</p>
+    <div class="actions" style="margin-top:6px">
+      <button class="btn ghost" id="sch-daily" onclick="setSched('daily')">Daily</button>
+      <button class="btn ghost" id="sch-weekly" onclick="setSched('weekly')">Weekly</button>
+    </div>
+    <button class="btn ghost" style="width:100%;margin-top:8px" id="sch-manual" onclick="setSched('manual')">Manual only</button>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Master CV</h2></div>
+    <button class="btn ghost" style="width:100%" onclick="loadCV()">📄 Load my CV</button>
+    <textarea id="cv-text" rows="10" style="display:none" placeholder="Your CV will appear here for editing"></textarea>
+    <button class="btn primary" style="width:100%;display:none" id="cv-save" onclick="saveCV()">Save CV</button>
   </div>
 </section>
 </main>
@@ -168,8 +205,8 @@ input{width:100%;background:var(--card2);border:1px solid var(--line);border-rad
   <a class="nav-item active" data-nav="home" href="#" onclick="show('home');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
   <a class="nav-item" data-nav="inbox" href="#" onclick="show('inbox');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>Inbox</a>
   <a class="nav-item" data-nav="jobs" href="#" onclick="show('jobs');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Jobs</a>
-  <a class="nav-item" data-nav="apps" href="#" onclick="toast('Applications — Phase 5');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>Apps</a>
-  <a class="nav-item" data-nav="settings" href="#" onclick="show('settings');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Settings</a>
+  <a class="nav-item" data-nav="apps" href="#" onclick="show('apps');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>Apps</a>
+  <a class="nav-item" data-nav="settings" href="#" onclick="show('settings');return false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Control</a>
 </nav>
 <div id="toast"></div>
 
@@ -177,6 +214,10 @@ input{width:100%;background:var(--card2);border:1px solid var(--line);border-rad
 var SECRET_KEY = "mySecretKey123";
 function getURL(){ return localStorage.getItem('SCRIPT_URL') || ""; }
 function api(action){ return fetch(getURL() + '?key=' + SECRET_KEY + '&action=' + action).then(function(r){ return r.json(); }); }
+function postAPI(payload){
+  payload.key = SECRET_KEY;
+  return fetch(getURL(), { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) }).then(function(r){ return r.json(); });
+}
 
 document.getElementById('dateline').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'long'});
 document.getElementById('url-input').value = getURL();
@@ -194,6 +235,8 @@ function show(name){
   var n=document.querySelector('[data-nav="'+name+'"]'); if(n) n.classList.add('active');
   if(name==='jobs') loadJobs();
   if(name==='inbox') loadInbox();
+  if(name==='settings') loadSettings();
+  if(name==='apps') loadApps();
 }
 
 function saveURL(){
@@ -236,7 +279,46 @@ function loadJobs(){
   }).catch(function(){ document.getElementById('jobs-list').innerHTML='<div class="empty">Offline — check Settings</div>'; });
 }
 
+// ---- APPLICATION TRACKER ----
+var LBL={DRAFT_READY:'Draft ready',APPLIED:'Applied',FOLLOWUP:'Follow-up sent',INTERVIEW:'Interview',OFFER:'Offer',REJECTED:'Rejected'};
+function loadApps(){
+  api('apps').then(function(d){
+    var el=document.getElementById('apps-list');
+    if(!d.apps || !d.apps.length){ el.innerHTML='<div class="empty">No applications yet.<br>Run a job search from Control.</div>'; return; }
+    var html='';
+    for(var i=0;i<d.apps.length;i++){
+      var a=d.apps[i];
+      var due=(a.status==='APPLIED' && a.days>=7);
+      html+='<div class="job" style="flex-direction:column;align-items:stretch;gap:10px">'
+        +'<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><b>'+esc(a.title)+'</b><span>'+esc(a.company)+' · '+esc(a.date)+(due?' · ⏰ follow-up due':'')+'</span></div><em class="chip st-'+esc(a.status)+'">'+(LBL[a.status]||a.status)+'</em></div>'
+        +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">'
+        +'<button class="btn ghost" style="padding:9px 2px;font-size:11px" onclick="setApp(\''+a.id+'\',\'APPLIED\')">Sent</button>'
+        +'<button class="btn ghost" style="padding:9px 2px;font-size:11px" onclick="setApp(\''+a.id+'\',\'INTERVIEW\')">Interview</button>'
+        +'<button class="btn ghost" style="padding:9px 2px;font-size:11px" onclick="setApp(\''+a.id+'\',\'OFFER\')">Offer</button>'
+        +'<button class="btn ghost" style="padding:9px 2px;font-size:11px" onclick="setApp(\''+a.id+'\',\'REJECTED\')">Rejected</button>'
+        +'</div>'
+        +((a.status==='APPLIED'||a.status==='FOLLOWUP')?'<button class="btn primary" style="padding:11px;font-size:12px" onclick="followUp(\''+a.id+'\')">✉️ Draft follow-up email</button>':'')
+        +'</div>';
+    }
+    el.innerHTML=html;
+  }).catch(function(){ document.getElementById('apps-list').innerHTML='<div class="empty">Offline — check Settings</div>'; });
+}
+function setApp(id,status){
+  postAPI({action:'app_status', id:id, status:status}).then(function(){ toast('✅ '+LBL[status]); loadApps(); }).catch(function(){ toast('Failed'); });
+}
+function followUp(id){
+  toast('✍️ Drafting follow-up…');
+  postAPI({action:'followup', id:id}).then(function(){ toast('✅ Follow-up draft in Gmail'); loadApps(); }).catch(function(){ toast('Failed'); });
+}
+
 var CATNAMES={JOB_RELATED:'Jobs',NEWSLETTER:'Newsletters',PROMOTION:'Promotions',SOCIAL:'Social',FINANCIAL:'Finance',PERSONAL:'Personal',NOTIFICATION:'Alerts',SPAM_CANDIDATE:'Spam',KEEP:'Keep',UNKNOWN:'Unknown'};
+function renderList(id, items){
+  var el=document.getElementById(id);
+  var html='';
+  for(var i=0;i<items.length;i++) html+='<div class="job" style="margin-top:8px"><div><b>'+esc(String(items[i].from).split('<')[0])+'</b><span>'+esc(items[i].subject)+'</span></div></div>';
+  el.innerHTML=html;
+}
+
 function loadInbox(){
   api('inbox').then(function(d){
     var el=document.getElementById('cats');
@@ -244,34 +326,78 @@ function loadInbox(){
     else{
       var html='';
       var keys=Object.keys(d.counts).sort(function(a,b){return d.counts[b]-d.counts[a];});
-      for(var i=0;i<keys.length;i++){ html+='<span class="cat">'+(CATNAMES[keys[i]]||keys[i])+' <b>'+d.counts[keys[i]]+'</b></span>'; }
+      for(var i=0;i<keys.length;i++) html+='<span class="cat">'+(CATNAMES[keys[i]]||keys[i])+' <b>'+d.counts[keys[i]]+'</b></span>';
       el.innerHTML=html||'<div class="empty">No data</div>';
     }
     var cc=document.getElementById('cleanup-card');
-    if(d.pendingCount>0){
+    if(d.pendingCount>0 || d.pendingDeleteCount>0){
       cc.style.display='block';
-      var list='';
-      for(var k=0;k<d.cleanup.length;k++){ list+='<div class="job" style="margin-top:8px"><div><b>'+esc(String(d.cleanup[k].from).split('<')[0])+'</b><span>'+esc(d.cleanup[k].subject)+'</span></div></div>'; }
-      document.getElementById('cleanup-list').innerHTML='<p style="font-size:13px;color:var(--muted);margin-bottom:6px">'+d.pendingCount+' old newsletters/promos/spam ready to archive:</p>'+list;
+      document.getElementById('archive-count').textContent=d.pendingCount;
+      document.getElementById('delete-count').textContent=d.pendingDeleteCount;
+      document.getElementById('archive-block').style.display = d.pendingCount>0 ? 'block':'none';
+      document.getElementById('delete-block').style.display = d.pendingDeleteCount>0 ? 'block':'none';
+      renderList('archive-list', d.cleanup||[]);
+      renderList('delete-list', d.deleteList||[]);
     } else cc.style.display='none';
   }).catch(function(){ document.getElementById('cats').innerHTML='<div class="empty">Offline — check Settings</div>'; });
 }
 
 function runScan(){
   var b=document.getElementById('scan-btn'); b.classList.add('spin');
-  toast('🧹 AI scanning your inbox…');
+  toast('🧹 AI scanning deep…');
   api('scan').then(function(d){
     b.classList.remove('spin');
-    toast('Scan done: '+d.archiveCount+' archive candidates');
+    toast('📦 '+d.archiveCount+' to archive · 🗑 '+d.deleteCount+' to delete');
     loadInbox();
-  }).catch(function(){ b.classList.remove('spin'); toast('Scan failed — see Telegram'); });
+  }).catch(function(){ b.classList.remove('spin'); toast('Scan failed'); });
 }
 
 function doCleanup(mode){
   api(mode).then(function(){
-    toast(mode==='approve' ? '✅ Archived!' : '👌 Kept everything');
+    toast(mode==='approve' ? '📦 Archived!' : mode==='delete' ? '🗑 Sent to Trash' : '👌 Kept everything');
     loadInbox();
   }).catch(function(){ toast('Failed'); });
+}
+
+// ---- CONTROL CENTER ----
+function loadSettings(){
+  api('settings').then(function(s){
+    document.getElementById('set-roles').value=s.TargetRoles||'';
+    document.getElementById('set-countries').value=s.TargetCountries||'';
+    document.getElementById('set-salary').value=s.MinSalary||'';
+    markSched(s.schedule||'weekly');
+  }).catch(function(){});
+}
+function markSched(mode){
+  ['daily','weekly','manual'].forEach(function(m){
+    document.getElementById('sch-'+m).className = 'btn ' + (m===mode?'primary':'ghost');
+  });
+}
+function saveSettings(){
+  postAPI({action:'save_settings', settings:{
+    TargetRoles: document.getElementById('set-roles').value,
+    TargetCountries: document.getElementById('set-countries').value,
+    MinSalary: document.getElementById('set-salary').value
+  }}).then(function(){ toast('✅ Preferences saved'); }).catch(function(){ toast('Save failed'); });
+}
+function searchNow(){
+  toast('🔍 Searching… results via Telegram');
+  postAPI({action:'search_now'}).then(function(){ toast('✅ Done — check Gmail Drafts & Apps tab'); }).catch(function(){ toast('Search failed'); });
+}
+function setSched(mode){
+  postAPI({action:'schedule', mode:mode}).then(function(){ markSched(mode); toast('⏰ Schedule: '+mode); }).catch(function(){ toast('Failed'); });
+}
+function loadCV(){
+  toast('📄 Loading CV…');
+  api('cv').then(function(d){
+    var ta=document.getElementById('cv-text');
+    ta.value=d.text||''; ta.style.display='block';
+    document.getElementById('cv-save').style.display='flex';
+    toast('Edit below, then Save');
+  }).catch(function(){ toast('Load failed'); });
+}
+function saveCV(){
+  postAPI({action:'save_cv', text:document.getElementById('cv-text').value}).then(function(){ toast('✅ Master CV saved'); }).catch(function(){ toast('Save failed'); });
 }
 
 var swCode="self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));";
@@ -280,4 +406,4 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register(URL.createObj
 if(getURL()){ show('home'); loadData(); } else { show('settings'); }
 </script>
 </body>
-</html>
+                                                                                                                    </html>
